@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Queries>
+	<query name="DeleteCoupon">DELETE FROM Coupon WHERE ProductName = @ProductName</query>
+	<query name="CreateCoupon">INSERT INTO Coupon (ProductName, Description, Amount) VALUES (@ProductName, @Description, @Amount)</query>
+	<query name="GetCoupon">SELECT * FROM Coupon WHERE ProductName = @ProductName</query>
+	<query name="UpdateCoupon">UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Amount = @Amount WHERE Id = @Id</query>
+</Queries>

@@ -1,0 +1,66 @@
+services:
+    catalogdb:
+        image: mongo
+
+    portainer:
+        image: portainer/portainer
+
+    catalog.api:
+        image: ${DOCKER_REGISTRY-}catalogapi
+        build:
+            context: .
+            dockerfile: Services/Catalog/Catalog.API/Dockerfile
+    
+    basketdb:
+        image: redis:alpine3.22
+
+    basket.api:
+        image: ${DOCKER_REGISTRY-}basketapi
+        build:
+            context: .
+            dockerfile: Services/Basket/Basket.API/Dockerfile
+    
+    discountdb:
+        image: postgres:18
+    
+    pgadmin:
+        image: dpage/pgadmin4:latest
+
+    discount.api:
+        image: ${DOCKER_REGISTRY-}discountapi
+        build:
+          context: .
+          dockerfile: Services/Discount/Discount.API/Dockerfile
+
+    shoppingdb:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+
+    ordering.api:
+        image: ${DOCKER_REGISTRY-}orderingapi
+        build:
+          context: .
+          dockerfile: Services/Ordering/Ordering.API/Dockerfile
+
+    identitymanagement.api:
+        image: ${DOCKER_REGISTRY-}identitymanagementapi
+        build:
+          context: .
+          dockerfile: Services/Identity/IdentityManagement.API/Dockerfile
+
+    ocelot.api:
+        image: ${DOCKER_REGISTRY-}ocelotapi
+        build:
+          context: .
+          dockerfile: Gateway/ApiGateway.Ocelot/Dockerfile
+
+volumes:
+    mongo_data:
+    portainer_data:
+    postgres_data:
+    pgadmin_data:
+    mssql_data:
+    loki_data:
+    grafana_data:
+    elasticsearch_data:
+    redisinsight_data:
+

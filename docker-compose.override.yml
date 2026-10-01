@@ -1,0 +1,257 @@
+services:
+    portainer:
+        container_name: portainer
+        restart: always
+        ports:
+          - "8100:8000"
+          - "9100:9000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data
+
+    catalog.api:
+        container_name: catalog.api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_HTTP_PORTS=80
+            - ASPNETCORE_HTTPS_PORTS=443
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+            - "DatabaseSettings__ConnectionString=mongodb://admin:Password123@catalogdb:27017/?authSource=admin"
+            - "DatabaseSettings__Database=CatalogDb"
+            - "DatabaseSettings__ProductCollection=Products"
+            - "DatabaseSettings__BrandCollection=Brands"
+            - "DatabaseSettings__TypeCollection=Types"
+            - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+        depends_on:
+            - catalogdb
+        ports:
+            - "8000:80"
+            - "9000:443"
+        volumes:
+            - ${USERPROFILE}\.aspnet\https:/https:ro
+    
+    catalogdb:
+        container_name: catalogdb
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo_data:/data/db 
+        environment:
+           MONGO_INITDB_ROOT_USERNAME: admin
+           MONGO_INITDB_ROOT_PASSWORD: Password123
+    
+    mongo-express:
+        image: mongo-express:latest
+        container_name: mongo-express
+        restart: always
+        depends_on:
+           - catalogdb
+        ports:
+           - "8081:8081"
+        environment:
+           ME_CONFIG_MONGODB_URL: mongodb://admin:Password123@catalogdb:27017/?authSource=admin
+
+    basket.api:
+        container_name: basket.api
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_HTTP_PORTS=80
+          - ASPNETCORE_HTTPS_PORTS=443
+          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+          - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+          - "CacheSettings__ConnectionString=basketdb:6379"
+          - "GrpcSettings__DiscountUrl=http://discount.api"
+          - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
+          - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+        depends_on:
+          - basketdb
+          - rabbitmq
+        ports:
+          - "8001:80"
+          - "9001:443"
+        volumes:
+            - ${USERPROFILE}\.aspnet\https:/https:ro
+    
+    basketdb:
+        container_name: basketdb
+        restart: always
+        ports:
+          - "6379:6379"
+
+    discount.api:
+        container_name: discount.api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_HTTP_PORTS=80
+            - ASPNETCORE_HTTPS_PORTS=443
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+            - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=postgres;Password=Password@123;"
+            - "ElasticConfiguration__Uri=http://elasticsearch:9200"      
+        depends_on:
+            - discountdb
+        ports:
+            - "8002:80"
+            - "9002:443"
+        volumes:
+            - ${USERPROFILE}\.aspnet\https:/https:ro
+
+    discountdb:
+        container_name: discountdb
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=Password@123
+          - POSTGRES_DB=DiscountDb
+        restart: always
+        ports:
+          - "5432:5432"
+        volumes:
+          - postgres_data:/var/lib/postgresql
+
+    pgadmin:
+        container_name: pgadmin
+        environment:
+          - PGADMIN_DEFAULT_EMAIL=aasif2707@gmail.com
+          - PGADMIN_DEFAULT_PASSWORD=admin
+        restart: always
+        ports:
+          - "5050:80"
+        volumes:
+          - pgadmin_data:/root/.pgadmin
+
+    shoppingdb:
+        container_name: shoppingdb
+        environment:
+          MSSQL_SA_PASSWORD: "Password@123"
+          ACCEPT_EULA: "Y"
+        restart: always
+        ports:
+          - "1433:1433"
+        volumes:
+          - mssql_data:/var/opt/mssql
+
+    ordering.api:
+        container_name: ordering.api
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_HTTP_PORTS=80
+          - ASPNETCORE_HTTPS_PORTS=443
+          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+          - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+          - "ConnectionStrings__DefaultConnection=Server=shoppingdb,1433;Database=OrderDb;User Id=sa;Password=Password@123;Encrypt=True;TrustServerCertificate=True"
+          - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
+          - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+        depends_on:
+          - shoppingdb
+          - rabbitmq
+        ports:
+          - "8003:80"
+          - "9003:443"
+        volumes:
+            - ${USERPROFILE}\.aspnet\https:/https:ro
+
+    identitymanagement.api:
+      container_name: identitymanagement.api
+      environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_HTTP_PORTS=80
+        - ASPNETCORE_HTTPS_PORTS=443
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+        - "ConnectionStrings__DefaultConnection=Server=shoppingdb,1433;Database=IdentityDb;User Id=sa;Password=Password@123;Encrypt=True;TrustServerCertificate=True"
+      depends_on:
+          - shoppingdb
+      ports:
+        - "8004:80"
+        - "9004:443"
+      volumes:
+        - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+        - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+        - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+        - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        - ${USERPROFILE}\.aspnet\https:/https:ro
+
+    ocelot.api:
+        container_name: ocelot.api
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_HTTP_PORTS=80
+          - ASPNETCORE_HTTPS_PORTS=443
+          - "ElasticConfiguration:Uri=http://elasticsearch:9200"
+          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+          - ASPNETCORE_Kestrel__Certificates__Default__Password=Password123
+        depends_on:
+          - catalog.api
+          - basket.api
+          - discount.api
+          - ordering.api
+          - identitymanagement.api
+        ports:
+          - "8010:80" 
+          - "9010:443"
+        volumes:
+          - ${USERPROFILE}\.aspnet\https:/https:ro
+          
+    redisinsight:
+        image: redis/redisinsight:latest
+        container_name: redisinsight
+        restart: always
+        ports:
+          - "5540:5540"
+        depends_on:
+          - basketdb
+        volumes:
+          - redisinsight_data:/data
+
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: rabbitmq
+        restart: always
+        ports:
+          - "5672:5672"
+          - "15672:15672"
+
+    elasticsearch:
+        image: elasticsearch:7.9.2
+        container_name: elasticsearch
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ports:
+            - "9200:9200"
+        volumes:
+            - elasticsearch_data:/usr/share/elasticsearch/data
+
+    kibana:
+        image: kibana:7.9.2
+        container_name: kibana
+        environment:
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+        depends_on:
+            - elasticsearch
+        ports:
+            - "5601:5601" 
+    
+    grafana:
+        container_name: grafana
+        image: grafana/grafana-oss
+        ports:
+         - "3000:3000"        
+        volumes:
+          - grafana_data:/var/lib/grafana
+          - C:/Users/aasif/OneDrive/Desktop/docker_training/volumes/grafana_data:/var/lib/grafana
+    
+    #(logger) its not configured in the application
+    loki:
+        container_name: loki
+        image: grafana/loki:main-83d5c2b
+        ports:
+         - "3100:3100"
+        command: -config.file=/etc/loki/local-config.yaml
+    
+
+
