@@ -13,7 +13,8 @@
 	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
-    <PackageReference Include="MassTransit" Version="9.2.2" />
+	  <PackageReference Include="MassTransit" Version="8.5.2" />
+	  <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
     <PackageReference Include="MediatR" Version="14.2.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
@@ -21,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Shared.Logging.Serilog\Shared.Logging.Serilog.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Messaging.RabbitMQ\Shared.Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\Basket.Application\Basket.Application.csproj" />
     <ProjectReference Include="..\Basket.Infrastructure\Basket.Infrastructure.csproj" />
   </ItemGroup>

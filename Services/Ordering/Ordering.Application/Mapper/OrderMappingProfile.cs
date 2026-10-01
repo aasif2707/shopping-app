@@ -2,6 +2,7 @@
 using Ordering.Application.Commands;
 using Ordering.Application.Responses;
 using Ordering.Core.Entites;
+using Shared.Messaging.RabbitMQ.Events;
 
 namespace Ordering.Application.Mapper
 {
@@ -13,7 +14,7 @@ namespace Ordering.Application.Mapper
             CreateMap<Order, CreateOrderCommand>().ReverseMap();
             CreateMap<CreateOrderCommand, Order>();
             CreateMap<Order, UpdateOrderCommand>().ReverseMap();
-            //CreateMap<CreateOrderCommand, BasketCheckoutEvent>().ReverseMap();
+            CreateMap<CreateOrderCommand, BasketCheckoutEvent>().ReverseMap();
         }
     }
 }

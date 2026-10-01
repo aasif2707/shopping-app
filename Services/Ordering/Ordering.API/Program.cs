@@ -2,11 +2,13 @@ using Common.Logging;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using MediatR;
+using MassTransit;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Ordering.API;
 using Ordering.Application.Handlers;
 using Ordering.Application.Mapper;
+using Ordering.Application.EventConsumer;
 using Ordering.Core.IRepositories;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Repositories;
@@ -21,6 +23,7 @@ builder.Host.UseSerilog(Serilogger.Configure);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
+
 /**** Healthcheck for DB (SQLSERVER)******/
 builder.Services.AddDbContext<OrderContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
 sqlServerOptionsAction: sqlOptions => {
@@ -52,6 +55,25 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+/**********RabbitMQ EventBus (Consumer) ***********/
+builder.Services.AddScoped<BasketOrderingConsumer>();
+builder.Services.AddMediator(cfg =>
+{
+    cfg.AddConsumers(typeof(BasketOrderingConsumer).Assembly);
+});
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumer<BasketOrderingConsumer>();
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+        cfg.ReceiveEndpoint(Shared.Messaging.RabbitMQ.Constants.BasketCheckoutQueue, c =>
+        {
+            c.ConfigureConsumer<BasketOrderingConsumer>(context);
+        });
+    });
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

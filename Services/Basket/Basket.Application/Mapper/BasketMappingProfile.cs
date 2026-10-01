@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Basket.Application.Responses;
 using Basket.Core.Entities;
+using Shared.Messaging.RabbitMQ.Events;
 
 namespace Basket.Application.Mapper
 {
@@ -10,6 +11,7 @@ namespace Basket.Application.Mapper
         {
             CreateMap<ShoppingCart, ShoppingCartResponse>().ReverseMap();
             CreateMap<ShoppingCartItem, ShoppingCartItemResponse>().ReverseMap();
+            CreateMap<BasketCheckout, BasketCheckoutEvent>().ReverseMap();
         }
     }
 }

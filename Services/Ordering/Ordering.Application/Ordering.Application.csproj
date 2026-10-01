@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Messaging.RabbitMQ\Shared.Messaging.RabbitMQ.csproj" />
     <ProjectReference Include="..\Ordering.Core\Ordering.Core.csproj" />
   </ItemGroup>
 	<ItemGroup>
@@ -14,6 +15,8 @@
 		<PackageReference Include="MediatR" Version="14.2.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+		<PackageReference Include="MassTransit" Version="8.5.2" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
 	</ItemGroup>
 
 </Project>

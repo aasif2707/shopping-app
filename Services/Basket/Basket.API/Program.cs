@@ -10,7 +10,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.OpenApi;
+using MassTransit;
 using Serilog;
 using System.Reflection;
 
@@ -34,6 +34,7 @@ var assemblies = new Assembly[]
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(BasketMappingProfile).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+
 /**** Healthcheck for DB (Redis)******/
 builder.Services.AddHealthChecks().AddRedis(builder.Configuration["CacheSettings:ConnectionString"], "Redis Health", HealthStatus.Degraded);
 builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +56,14 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
     options.KnownNetworks.Clear(); // Clear the default known networks to allow all
     options.KnownProxies.Clear();  // Clear the default known proxies to allow all
+});
+/**********RabbitMQ EventBus (Producer) ***********/
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
 });
 
 var app = builder.Build();

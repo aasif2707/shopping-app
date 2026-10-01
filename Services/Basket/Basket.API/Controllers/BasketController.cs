@@ -7,7 +7,7 @@ using Basket.Application.Responses;
 using Basket.Core.Entities;
 using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Shared.Messaging.RabbitMQ.Events;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -83,35 +83,35 @@ namespace Basket.API.Controllers
             return Ok(await _mediator.Send(query));
         }
 
-        //[Route("[action]")]
-        //[HttpPost]
-        //[ProducesResponseType((int)HttpStatusCode.Accepted)]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
-        //{
-        //    try
-        //    {
-        //        var query = new GetBasketByUserNameQuery(basketCheckout.UserName);
-        //        var basket = await _mediator.Send(query);
-        //        if (basket == null)
-        //        {
-        //            return BadRequest();
-        //        }
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        {
+            try
+            {
+                var query = new GetBasketByUserNameQuery(basketCheckout.UserName);
+                var basket = await _mediator.Send(query);
+                if (basket == null)
+                {
+                    return BadRequest();
+                }
 
-        //        _logger.LogInformation($"Pushing data to rabbitMQ");
-        //        var eventMesg = BasketMapper.Mapper.Map<BasketCheckoutEvent>(basketCheckout);
-        //        eventMesg.TotalPrice = basket.TotalPrice;
-        //        await _publishEndpoint.Publish(eventMesg);
-        //        _logger.LogInformation($"Deleting data from basket post success push to rabbitMQ");
-        //        var deleteQuery = new DeleteBasketByUserNameCommand(basketCheckout.UserName);
-        //        await _mediator.Send(deleteQuery);
-        //        return Accepted();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Some error happened while pushing to rabbitMQ");
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                _logger.LogInformation($"Pushing data to rabbitMQ");
+                var eventMesg = BasketMapper.Mapper.Map<BasketCheckoutEvent>(basketCheckout);
+                eventMesg.TotalPrice = basket.TotalPrice;
+                await _publishEndpoint.Publish(eventMesg);
+                _logger.LogInformation($"Deleting data from basket post success push to rabbitMQ");
+                var deleteQuery = new DeleteBasketByUserNameCommand(basketCheckout.UserName);
+                await _mediator.Send(deleteQuery);
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Some error happened while pushing to rabbitMQ");
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

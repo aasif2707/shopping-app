@@ -15,7 +15,10 @@ COPY ["Services/Ordering/Ordering.API/Ordering.API.csproj", "Services/Ordering/O
 COPY ["Services/Ordering/Ordering.Application/Ordering.Application.csproj", "Services/Ordering/Ordering.Application/"]
 COPY ["Services/Ordering/Ordering.Core/Ordering.Core.csproj", "Services/Ordering/Ordering.Core/"]
 COPY ["Services/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj", "Services/Ordering/Ordering.Infrastructure/"]
+
 COPY ["Shared/Shared.Logging.Serilog/Shared.Logging.Serilog.csproj", "Shared/Shared.Logging.Serilog/"]
+COPY ["Shared/Shared.Messaging.RabbitMQ/Shared.Messaging.RabbitMQ.csproj", "Shared/Shared.Messaging.RabbitMQ/"]
+
 RUN dotnet restore "./Services/Ordering/Ordering.API/Ordering.API.csproj"
 COPY . .
 WORKDIR "/src/Services/Ordering/Ordering.API"
