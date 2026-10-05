@@ -5,6 +5,8 @@ using Serilog;
 using Common.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+// Load environment-specific Ocelot configuration
+builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json",optional: true,reloadOnChange: true);
 builder.Host.UseSerilog(Serilogger.Configure);
 builder.Services.AddCors(options =>
 {

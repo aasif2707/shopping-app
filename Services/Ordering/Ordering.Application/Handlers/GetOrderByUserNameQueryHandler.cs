@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.Application.Handlers
 {
-    public class GetOrderByUserNameQueryHandler : IRequestHandler<GetOrderByUserNameQuery, IList<OrderResponse>>
+    public class GetOrderByUserNameQueryHandler : IRequestHandler<GetOrderByUserNameQuery, List<OrderResponse>>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace Ordering.Application.Handlers
             _mapper = mapper;
             _orderRepository = orderRepository; 
         }
-        public async Task<IList<OrderResponse>> Handle(GetOrderByUserNameQuery request, CancellationToken cancellationToken)
+        public async Task<List<OrderResponse>> Handle(GetOrderByUserNameQuery request, CancellationToken cancellationToken)
         {
             var orderList = await _orderRepository.GetOrdersByUserName(request.UserName);
             return _mapper.Map<List<OrderResponse>>(orderList);

@@ -79,8 +79,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseSerilogRequestLogging();// Serilog HTTP request logging
 app.UseSwagger();
-app.UseSwaggerUI();
-app.UseHttpsRedirection();
+app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordering API v1"));
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseResponseCaching();
 app.UseCors("frontend");
 app.UseAuthentication();

@@ -7,7 +7,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "catalog.api",
-          "Port": "9000"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog",
@@ -20,7 +20,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "catalog.api",
-          "Port": "9000"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetProductById/{id}",
@@ -31,8 +31,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "host.docker.internal",
-          "Port": "9000"
+          "Host": "catalog.api",
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetAllProducts",
@@ -44,7 +44,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "catalog.api",
-          "Port": "9000"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetAllBrands",
@@ -56,7 +56,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "catalog.api",
-          "Port": "9000"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetAllTypes",
@@ -68,7 +68,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "catalog.api",
-          "Port": "9000"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Catalog/GetProductsByBrandName/{brand}",
@@ -81,7 +81,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "9001"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Basket/GetBasket/{userName}",
@@ -93,7 +93,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "9001"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Basket/DeleteBasket/{userName}",
@@ -105,7 +105,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "9001"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Basket/CreateBasket",
@@ -122,7 +122,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "9001"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Basket/Checkout",
@@ -141,7 +141,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "basket.api",
-          "Port": "9001"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Basket/CheckoutV2",
@@ -161,7 +161,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "discount.api",
-          "Port": "9002"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Discount/{productName}",
@@ -173,7 +173,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "discount.api",
-          "Port": "9002"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Discount",
@@ -186,7 +186,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "ordering.api",
-          "Port": "9003"
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Order/{userName}",
@@ -199,7 +199,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "identitymanagement.api",
-          "Port": 9004
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/Auth/{everything}",
@@ -212,11 +212,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/admin/users/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "identitymanagement.api",
-          "Port": 80
+          "Port": "443"
         }
       ],
       "UpstreamPathTemplate": "/api/v1/admin/users/{everything}",
@@ -228,6 +228,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://ocelot.api:9010"
+    "BaseUrl": "http://host.docker.internal:9010"
   }
 }

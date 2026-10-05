@@ -74,7 +74,10 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();// Serilog HTTP request logging
 app.UseSwagger();
 app.UseSwaggerUI(o => o.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API v1"));
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseResponseCaching();
 app.UseCors("frontend");
 app.UseRateLimiter();

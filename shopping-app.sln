@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.10.12224.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -66,6 +66,47 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Ocelot", "Gateway\ApiGateway.Ocelot\ApiGateway.Ocelot.csproj", "{D0907079-42F6-481B-B11A-485782D0C479}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Messaging.RabbitMQ", "Shared\Shared.Messaging.RabbitMQ\Shared.Messaging.RabbitMQ.csproj", "{50D1F397-FAD1-4A34-8630-4C2B1C4C6453}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp\", "{DD049EF4-90D1-A8CF-666D-CEAF04B448CC}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_56650"
+		Debug.AspNetCompiler.PhysicalPath = "WebApp\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56650\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_56650"
+		Release.AspNetCompiler.PhysicalPath = "WebApp\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56650\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "56650"
+		SlnRelativePath = "WebApp\"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp.UI", "WebApp.UI\", "{72E0273E-540B-3512-EF7F-604D12295734}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51423"
+		Debug.AspNetCompiler.PhysicalPath = "WebApp.UI\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51423\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51423"
+		Release.AspNetCompiler.PhysicalPath = "WebApp.UI\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51423\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51423"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,6 +210,14 @@ Global
 		{50D1F397-FAD1-4A34-8630-4C2B1C4C6453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50D1F397-FAD1-4A34-8630-4C2B1C4C6453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50D1F397-FAD1-4A34-8630-4C2B1C4C6453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD049EF4-90D1-A8CF-666D-CEAF04B448CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD049EF4-90D1-A8CF-666D-CEAF04B448CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD049EF4-90D1-A8CF-666D-CEAF04B448CC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD049EF4-90D1-A8CF-666D-CEAF04B448CC}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{72E0273E-540B-3512-EF7F-604D12295734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E0273E-540B-3512-EF7F-604D12295734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E0273E-540B-3512-EF7F-604D12295734}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E0273E-540B-3512-EF7F-604D12295734}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

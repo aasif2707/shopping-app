@@ -38,7 +38,10 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();// Serilog HTTP request logging
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseRouting();
 app.MapGrpcService<DiscountService>();
 app.MapHealthChecks("/health", new HealthCheckOptions
