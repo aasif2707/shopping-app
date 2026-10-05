@@ -62,3 +62,10 @@
                                             ┌─────────┐
                                             │ Kibana  │
                                             └─────────┘
+
+
+Steps to spin-up containers locally in docker-desktop:
+------------------------------------------------------
+docker compose build catalog.api basket.api ordering.api discount.api identitymanagement.api ocelot.api --no-cache
+docker compose up portainer catalogdb mongo-express basketdb discountdb pgadmin shoppingdb redisinsight rabbitmq elasticsearch kibana grafana loki
+docker compose up catalog.api basket.api ordering.api discount.api identitymanagement.api ocelot.api -d
